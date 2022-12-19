@@ -5,6 +5,11 @@ using UnityEngine;
 public class PlayerMovements : MonoBehaviour
 {
     private Rigidbody2D rb;
+    [SerializeField] float speed = 6;
+    public Transform groundcheck;
+    public float GroundCheckRadius;
+    public LayerMask groundlayer;
+    private bool isTouchingGround;
     // Start is called before the first frame update
    private void Start()
     {
@@ -14,11 +19,13 @@ public class PlayerMovements : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        isTouchingGround = Physics2D.OverlapCircle(groundcheck.position, GroundCheckRadius, groundlayer);
+
         float dirX = Input.GetAxis("Horizontal");
-            rb.velocity = new Vector2(dirX * 5f, rb.velocity.y);
-        if (Input.GetButtonDown("Jump"))
+            rb.velocity = new Vector2(dirX * speed, rb.velocity.y);
+        if (Input.GetButtonDown("Jump") && isTouchingGround)
         {
-            rb.velocity = new Vector2(rb.velocity.x,7);
+            rb.velocity = new Vector2(rb.velocity.x,13);
         }
         
     }
